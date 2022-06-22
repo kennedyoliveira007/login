@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
+import { UserService } from '../services/user.service';
 
 export const AuthContext = createContext({});
 
@@ -54,9 +55,15 @@ export const AuthProvider = ({ children }) => {
       newUser = [{ email, password }];
     }
 
-    localStorage.setItem('users_bd', JSON.stringify(newUser));
-
-    return;
+    new UserService()
+      .cadastrarUsuario({
+        login: email,
+        password: password,
+      })
+      .then((res) => {
+        //localStorage.setItem('users_bd', JSON.stringify(newUser));
+      })
+      .catch(() => 'Erro ao cadastrar usuario');
   };
 
   const signout = () => {
